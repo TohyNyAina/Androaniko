@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Register() {
     return (
-        <div className="bg-white">
+        <div>
             <div className="max-w-lg mx-auto  bg-white dark:bg-gray-800 rounded-lg shadow-md px-8 py-10 flex flex-col items-center">
                 <h1 className="text-xl font-bold text-center text-gray-700 dark:text-gray-200 mb-8">Bienvenu sur Androaniko</h1>
                 <form action="#" className="w-full flex flex-col gap-4">
