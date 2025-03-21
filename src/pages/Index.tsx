@@ -85,8 +85,8 @@ const Index = () => {
       <main className="flex-1 flex items-center justify-center p-6">
         <div className="w-full max-w-md mx-auto">
           <div className="text-center mb-10 animate-fade-in">
-            <img src="/images/Androany.png" alt="Logo Androany" className="mx-auto mb-4 h-16" />
-            <h1 className="text-4xl font-light tracking-tight mb-2">Androany</h1>
+            <img src="/images/Androany.png" alt="Logo Androany" className="mx-auto mb-4 h-24" />
+            <h1 className="text-4xl font-bold tracking-tight mb-2">Androany</h1>
             <p className="text-muted-foreground">
               Trouvez quoi porter en fonction de la météo
             </p>
