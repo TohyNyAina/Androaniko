@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -6,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { weatherService } from '@/services/weatherService';
-import { MapPin, Search } from 'lucide-react';
+import { MapPin, Search, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const Index = () => {
@@ -15,16 +14,16 @@ const Index = () => {
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [loadingLocation, setLoadingLocation] = useState(false);
-  
+  const [loadingSuggestions, setLoadingSuggestions] = useState(false);
+
   const handleSearch = async () => {
     if (!location.trim()) {
       toast.error('Veuillez entrer un lieu');
       return;
     }
-    
+
     setLoading(true);
     try {
-      // Fitadiavana ny ville na ny emplacement
       const cityName = location.split(',')[0].trim();
       await weatherService.getByCity(cityName);
       navigate(`/weather?location=${encodeURIComponent(cityName)}`);
@@ -34,29 +33,32 @@ const Index = () => {
       setLoading(false);
     }
   };
-  
+
   const handleLocationInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setLocation(value);
-    
+
     if (value.length > 2) {
+      setLoadingSuggestions(true);
       try {
         const suggestions = await weatherService.getCityAutocomplete(value);
         setSuggestions(suggestions);
       } catch (error) {
         setSuggestions([]);
+      } finally {
+        setLoadingSuggestions(false);
       }
     } else {
       setSuggestions([]);
     }
   };
-  
+
   const handleGeolocation = () => {
     if (!navigator.geolocation) {
       toast.error('La géolocalisation n\'est pas supportée par votre navigateur.');
       return;
     }
-    
+
     setLoadingLocation(true);
     navigator.geolocation.getCurrentPosition(
       async (position) => {
@@ -77,18 +79,19 @@ const Index = () => {
       }
     );
   };
-  
+
   return (
     <div className="min-h-screen flex flex-col">
       <main className="flex-1 flex items-center justify-center p-6">
         <div className="w-full max-w-md mx-auto">
           <div className="text-center mb-10 animate-fade-in">
+            <img src="/images/Androany.png" alt="Logo Androany" className="mx-auto mb-4 h-16" />
             <h1 className="text-4xl font-light tracking-tight mb-2">Androany</h1>
             <p className="text-muted-foreground">
               Trouvez quoi porter en fonction de la météo
             </p>
           </div>
-          
+
           <div className="space-y-6 animate-slide-up">
             <div className="space-y-2">
               <Label htmlFor="location">Votre emplacement</Label>
@@ -100,6 +103,11 @@ const Index = () => {
                   onChange={handleLocationInput}
                   className="pr-10"
                 />
+                {loadingSuggestions && (
+                  <div className="absolute right-10 top-0 h-full flex items-center">
+                    <Loader2 className="animate-spin h-4 w-4" />
+                  </div>
+                )}
                 <Button
                   variant="ghost"
                   size="icon"
@@ -111,7 +119,7 @@ const Index = () => {
                   <MapPin className="h-4 w-4" />
                 </Button>
               </div>
-              
+
               {suggestions.length > 0 && (
                 <ul className="mt-1 border rounded-md overflow-hidden bg-background shadow-sm divide-y animate-fade-in">
                   {suggestions.map((suggestion, index) => (
@@ -129,7 +137,7 @@ const Index = () => {
                 </ul>
               )}
             </div>
-            
+
             <Button 
               onClick={handleSearch} 
               disabled={loading || !location.trim()}
@@ -138,7 +146,7 @@ const Index = () => {
               {loading ? 'Chargement...' : 'Afficher la météo'}
               {!loading && <Search className="ml-2 h-4 w-4" />}
             </Button>
-            
+
             <div className="text-center">
               <Button 
                 variant="ghost" 
@@ -151,7 +159,7 @@ const Index = () => {
           </div>
         </div>
       </main>
-      
+
       <footer className="py-6 border-t">
         <div className="container text-center text-sm text-muted-foreground">
           <p>© {new Date().getFullYear()} Androany by Tohy Ny Aina.</p>
