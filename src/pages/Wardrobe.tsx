@@ -66,7 +66,7 @@ const Wardrobe = () => {
   const delayedToast = (message: string) => {
     setTimeout(() => {
       toast.success(message);
-    }, 2000);
+    }, 500);
   };
 
   const handleAddItem = (item: Omit<ClothingItem, 'id' | 'createdAt'>) => {
@@ -94,6 +94,16 @@ const Wardrobe = () => {
       setItemToDelete(null);
       delayedToast('Vêtement supprimé');
     }
+  };
+
+  const handleEditItem = (item: ClothingItem) => {
+    setCurrentItem(item);
+    setIsFormOpen(true);
+  };
+
+  const handleDeleteItem = (id: string) => {
+    setItemToDelete(id);
+    setIsDeleteDialogOpen(true);
   };
 
   return (
