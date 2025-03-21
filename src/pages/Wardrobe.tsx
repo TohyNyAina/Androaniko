@@ -111,8 +111,6 @@ const Wardrobe = () => {
             Accueil
           </Button>
           
-          <h1 className="text-xl font-medium">Ma Garde-Robe</h1>
-          
           <Button onClick={() => {
             setCurrentItem(null);
             setIsFormOpen(true);
@@ -166,6 +164,8 @@ const Wardrobe = () => {
             </div>
           </div>
         </div>
+
+        <h1 className="text-xl font-medium">Ma Garde-Robe</h1> <br />
         
         {items.length === 0 ? (
           <div className="text-center py-12 space-y-4">

@@ -1,2 +1,7 @@
-
-<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="m7 9 3.5 1L12 8l1.5 2L17 9"></path><path d="M12 12v6"></path></svg>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Transformed by: SVG Repo Mixer Tools -->
+<svg fill="#8F8C8C" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" width="800px" height="800px">
+<g id="SVGRepo_bgCarrier" stroke-width="0"/>
+<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+<g id="SVGRepo_iconCarrier"> <g> <g> <path d="M94.563,238.759h15.673c0-59.057,48.045-107.102,107.102-107.102v-15.673C149.64,115.984,94.563,171.06,94.563,238.759z"/> </g> </g> <g> <g> <path d="M462.367,348.996v-54.335h-13.584v-55.902c0-84.984-69.139-154.122-154.122-154.122h-77.322 c-84.984,0-154.122,69.139-154.122,154.122v55.902H49.633v54.335H0v7.837c0,38.891,31.64,70.531,70.531,70.531h370.939 c38.891,0,70.531-31.64,70.531-70.531v-7.837H462.367z M78.89,238.759c0-76.341,62.108-138.449,138.449-138.449h77.322 c76.34,0,138.449,62.108,138.449,138.449v55.902H78.89V238.759z M446.694,310.335v38.661H300.408v-38.661H446.694z M284.735,310.335v38.661h-57.469v-38.661H284.735z M65.306,310.335h146.286v38.661H65.306V310.335z M441.469,411.69H70.531 c-27.587,0-50.484-20.472-54.299-47.02h479.537C491.954,391.218,469.057,411.69,441.469,411.69z"/> </g> </g> <g> <g> <rect x="233.012" y="115.984" width="15.673" height="15.673"/> </g> </g> </g>
+</svg>
