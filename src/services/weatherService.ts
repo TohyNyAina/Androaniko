@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 
 export type WeatherData = {
@@ -27,7 +26,8 @@ export type LocationSuggestion = {
 };
 
 // Use the provided API key
-const apiKey = "ee5e0f4ea27e4f45b00160822242208";
+const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
+
 
 export const weatherService = {
   getByCity: async (city: string): Promise<WeatherData> => {
