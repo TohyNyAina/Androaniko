@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ClothingItem } from '@/services/clothingService';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -21,14 +20,25 @@ const ClothingForm: React.FC<ClothingFormProps> = ({ initialData, onSubmit, onCa
   const [maxTemp, setMaxTemp] = useState<number | undefined>(initialData?.maxTemp);
   const [imageUrl, setImageUrl] = useState(initialData?.imageUrl || '');
 
+  // Détermine les options de type en fonction de la saison sélectionnée
+  const getAvailableTypes = () => {
+    if (season === 'summer') {
+      return ['top', 'bottom', 'footwear', 'accessory']; // Pas d'option extérieur pour l'été
+    }
+    if (season === 'all') {
+      return ['top', 'bottom', 'outerwear', 'footwear', 'accessory']; // Toutes les options disponibles pour toutes saisons
+    }
+    return ['top', 'bottom', 'outerwear', 'footwear', 'accessory']; // Par défaut, toutes les options sauf extérieur pour été
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!name.trim()) {
       toast.error('Veuillez donner un nom à ce vêtement');
       return;
     }
-    
+
     onSubmit({
       name,
       type,
@@ -38,6 +48,13 @@ const ClothingForm: React.FC<ClothingFormProps> = ({ initialData, onSubmit, onCa
       imageUrl: imageUrl || undefined
     });
   };
+
+  useEffect(() => {
+    // Reset type to 'top' if it's not in the available types after season change
+    if (!getAvailableTypes().includes(type)) {
+      setType(getAvailableTypes()[0]);
+    }
+  }, [season]);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 animate-fade-in">
@@ -51,7 +68,7 @@ const ClothingForm: React.FC<ClothingFormProps> = ({ initialData, onSubmit, onCa
           className="w-full"
         />
       </div>
-      
+
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="type">Type</Label>
@@ -60,15 +77,23 @@ const ClothingForm: React.FC<ClothingFormProps> = ({ initialData, onSubmit, onCa
               <SelectValue placeholder="Sélectionner un type" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="top">Haut</SelectItem>
-              <SelectItem value="bottom">Bas</SelectItem>
-              <SelectItem value="outerwear">Extérieur</SelectItem>
-              <SelectItem value="footwear">Chaussures</SelectItem>
-              <SelectItem value="accessory">Accessoire</SelectItem>
+              {getAvailableTypes().map((availableType) => (
+                <SelectItem key={availableType} value={availableType}>
+                  {availableType === 'top'
+                    ? 'Haut'
+                    : availableType === 'bottom'
+                    ? 'Bas'
+                    : availableType === 'outerwear'
+                    ? 'Extérieur'
+                    : availableType === 'footwear'
+                    ? 'Chaussures'
+                    : 'Accessoire'}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
-        
+
         <div className="space-y-2">
           <Label htmlFor="season">Saison</Label>
           <Select value={season} onValueChange={(value) => setSeason(value as ClothingItem['season'])}>
@@ -85,7 +110,7 @@ const ClothingForm: React.FC<ClothingFormProps> = ({ initialData, onSubmit, onCa
           </Select>
         </div>
       </div>
-      
+
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="minTemp">Température minimale (°C)</Label>
@@ -97,7 +122,7 @@ const ClothingForm: React.FC<ClothingFormProps> = ({ initialData, onSubmit, onCa
             placeholder="Ex: 10"
           />
         </div>
-        
+
         <div className="space-y-2">
           <Label htmlFor="maxTemp">Température maximale (°C)</Label>
           <Input
@@ -109,7 +134,7 @@ const ClothingForm: React.FC<ClothingFormProps> = ({ initialData, onSubmit, onCa
           />
         </div>
       </div>
-      
+
       <div className="space-y-2">
         <Label htmlFor="imageUrl">URL de l'image (optionnel)</Label>
         <Input
@@ -119,7 +144,7 @@ const ClothingForm: React.FC<ClothingFormProps> = ({ initialData, onSubmit, onCa
           placeholder="https://example.com/image.jpg"
         />
       </div>
-      
+
       <div className="flex justify-end space-x-2 pt-2">
         <Button type="button" variant="outline" onClick={onCancel} className="btn-transition">
           Annuler

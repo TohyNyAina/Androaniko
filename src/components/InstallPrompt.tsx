@@ -1,8 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { pwaService } from '@/services/pwaService';
-import { Download } from 'lucide-react';
 
 // Interface pour l'événement beforeinstallprompt
 interface BeforeInstallPromptEvent extends Event {
@@ -21,56 +19,38 @@ const InstallPrompt = () => {
 
     // Capturer l'événement beforeinstallprompt
     const handleInstallPrompt = (e: Event) => {
-      e.preventDefault();
+      e.preventDefault(); // Prévenir l'affichage du prompt par défaut
       setDeferredPrompt(e as BeforeInstallPromptEvent);
-      
-      // Afficher le toast d'installation
-      toast.info('Installer l\'application', {
-        description: 'Installez notre application pour une meilleure expérience',
-        action: {
-          label: 'Installer',
-          onClick: () => handleInstallClick()
-        },
-        duration: 10000,
-        icon: <Download className="h-4 w-4" />
-      });
+
+      // Afficher le prompt d'installation natif via l'événement du navigateur
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice
+          .then((choiceResult) => {
+            // Informer l'utilisateur en fonction de sa décision
+            if (choiceResult.outcome === 'accepted') {
+              toast.success('Merci d\'avoir installé notre application!');
+            } else {
+              toast.info('Vous pouvez installer l\'application plus tard depuis le menu de votre navigateur');
+            }
+            // Réinitialiser l'état après que l'utilisateur ait fait un choix
+            setDeferredPrompt(null);
+          })
+          .catch((error) => {
+            console.error('Erreur lors de l\'installation:', error);
+            toast.error('Une erreur est survenue lors de l\'installation');
+          });
+      }
     };
 
     // Configurer l'écouteur d'événement d'installation
-    pwaService.setupInstallListener(handleInstallPrompt);
+    window.addEventListener('beforeinstallprompt', handleInstallPrompt);
 
     // Nettoyer l'écouteur lors du démontage
     return () => {
-      window.removeEventListener('beforeinstallprompt', handleInstallPrompt as EventListener);
+      window.removeEventListener('beforeinstallprompt', handleInstallPrompt);
     };
-  }, []);
-
-  const handleInstallClick = async () => {
-    if (!deferredPrompt) {
-      return;
-    }
-
-    try {
-      // Afficher le prompt d'installation natif
-      await deferredPrompt.prompt();
-      
-      // Attendre la décision de l'utilisateur
-      const choiceResult = await deferredPrompt.userChoice;
-      
-      // Informer l'utilisateur en fonction de sa décision
-      if (choiceResult.outcome === 'accepted') {
-        toast.success('Merci d\'avoir installé notre application!');
-      } else {
-        toast.info('Vous pouvez installer l\'application plus tard depuis le menu de votre navigateur');
-      }
-      
-      // Réinitialiser l'état
-      setDeferredPrompt(null);
-    } catch (error) {
-      console.error('Erreur lors de l\'installation:', error);
-      toast.error('Une erreur est survenue lors de l\'installation');
-    }
-  };
+  }, [deferredPrompt]);
 
   return null; // Ce composant ne rend rien visuellement
 };

@@ -66,9 +66,24 @@ const Weather = () => {
 
   if (!weather) return null;
 
+  // Vérification de la température pour ne pas recommander des vêtements d'extérieur si la température est trop élevée ou trop basse
+  const isOuterwearRecommended = weather.current.temp_c <= 15; // Par exemple, on recommande des vêtements d'extérieur si la température est inférieure ou égale à 15°C
+
+  // Récupérer les recommandations
   const recommendations = clothingService.getRecommendations(weather.current.temp_c);
   const defaultRec = clothingService.getDefaultRecommendations(weather.current.temp_c);
-  const hasItems = recommendations.tops.length || recommendations.bottoms.length || recommendations.outerwear.length;
+
+  // Modifier les recommandations de vêtements d'extérieur en fonction de la température
+  if (!isOuterwearRecommended) {
+    recommendations.outerwear = []; // Si la température est trop chaude ou trop froide, on retire les vêtements d'extérieur
+  }
+
+  const hasItems =
+    recommendations.tops.length ||
+    recommendations.bottoms.length ||
+    recommendations.outerwear.length ||
+    recommendations.footwear.length ||
+    recommendations.accessory.length;
 
   return (
     <div className="min-h-screen bg-background">
@@ -158,11 +173,25 @@ const Weather = () => {
                 fallbackText="Ajoutez des bas à votre garde-robe"
                 fallbackImage="/images/bottom.svg"
               />
+              {isOuterwearRecommended && (
+                <RecommendationCard
+                  title="Vêtement d'extérieur"
+                  items={recommendations.outerwear}
+                  fallbackText="Ajoutez des vêtements d'extérieur"
+                  fallbackImage="/images/outerwear.svg"
+                />
+              )}
               <RecommendationCard
-                title="Vêtement d'extérieur"
-                items={recommendations.outerwear}
-                fallbackText="Ajoutez des vêtements d'extérieur"
-                fallbackImage="/images/outerwear.svg"
+                title="Chaussures"
+                items={recommendations.footwear}
+                fallbackText="Ajoutez des chaussures à votre garde-robe"
+                fallbackImage="/images/footwear.svg"
+              />
+              <RecommendationCard
+                title="Accessoires"
+                items={recommendations.accessory}
+                fallbackText="Ajoutez des accessoires à votre garde-robe"
+                fallbackImage="/images/accessory.svg"
               />
             </div>
           )}

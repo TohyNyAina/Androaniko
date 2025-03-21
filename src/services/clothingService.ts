@@ -1,4 +1,3 @@
-
 export type ClothingItem = {
   id: string;
   name: string;
@@ -59,7 +58,7 @@ export const clothingService = {
   },
 
   // Get recommendations based on temperature
-  getRecommendations: (tempC: number): {tops: ClothingItem[], bottoms: ClothingItem[], outerwear: ClothingItem[]} => {
+  getRecommendations: (tempC: number): {tops: ClothingItem[], bottoms: ClothingItem[], outerwear: ClothingItem[], footwear: ClothingItem[], accessory: ClothingItem[]} => {
     const items = clothingService.getAll();
     
     // Determine season based on temperature
@@ -83,10 +82,12 @@ export const clothingService = {
        tempC >= item.minTemp && tempC <= item.maxTemp)
     );
     
-    // Group by type
+    // Group by type (including footwear and accessory)
     const tops = suitableItems.filter(item => item.type === 'top');
     const bottoms = suitableItems.filter(item => item.type === 'bottom');
     const outerwear = suitableItems.filter(item => item.type === 'outerwear');
+    const footwear = suitableItems.filter(item => item.type === 'footwear');
+    const accessory = suitableItems.filter(item => item.type === 'accessory');
     
     // Randomize selections
     const randomize = <T>(arr: T[]): T[] => {
@@ -96,7 +97,9 @@ export const clothingService = {
     return {
       tops: randomize(tops),
       bottoms: randomize(bottoms),
-      outerwear: randomize(outerwear)
+      outerwear: randomize(outerwear),
+      footwear: randomize(footwear),
+      accessory: randomize(accessory)
     };
   },
 
