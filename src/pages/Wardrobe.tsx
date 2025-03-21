@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -24,54 +23,53 @@ const Wardrobe = () => {
   const [currentItem, setCurrentItem] = useState<ClothingItem | null>(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
-  
+
   useEffect(() => {
     loadItems();
   }, []);
-  
+
   useEffect(() => {
     applyFilters();
   }, [items, filterType, filterSeason, searchQuery]);
-  
+
   const loadItems = () => {
     const loadedItems = clothingService.getAll();
     setItems(loadedItems);
   };
-  
+
   const applyFilters = () => {
     let filtered = [...items];
-    
+
     // Filtrage type
     if (filterType !== 'all') {
       filtered = filtered.filter(item => item.type === filterType);
     }
-    
+
     // Filtrage saison
     if (filterSeason !== 'all') {
       filtered = filtered.filter(item => item.season === filterSeason || item.season === 'all');
     }
-    
+
     // Recherche
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(item => 
+      filtered = filtered.filter(item =>
         item.name.toLowerCase().includes(query)
       );
     }
-    
-    
+
     filtered.sort((a, b) => b.createdAt - a.createdAt);
-    
+
     setFilteredItems(filtered);
   };
-  
+
   const handleAddItem = (item: Omit<ClothingItem, 'id' | 'createdAt'>) => {
     clothingService.add(item);
     loadItems();
     setIsFormOpen(false);
     toast.success('Vêtement ajouté');
   };
-  
+
   const handleUpdateItem = (item: Omit<ClothingItem, 'id' | 'createdAt'>) => {
     if (currentItem) {
       clothingService.update(currentItem.id, item);
@@ -81,7 +79,7 @@ const Wardrobe = () => {
       toast.success('Vêtement mis à jour');
     }
   };
-  
+
   const handleDeleteConfirm = () => {
     if (itemToDelete) {
       clothingService.delete(itemToDelete);
@@ -91,26 +89,26 @@ const Wardrobe = () => {
       toast.success('Vêtement supprimé');
     }
   };
-  
+
   const handleEditItem = (item: ClothingItem) => {
     setCurrentItem(item);
     setIsFormOpen(true);
   };
-  
+
   const handleDeleteItem = (id: string) => {
     setItemToDelete(id);
     setIsDeleteDialogOpen(true);
   };
-  
+
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b">
+      <header className="border-b bg-white fixed top-0 left-0 right-0 z-10">
         <div className="container py-4 flex items-center justify-between">
           <Button variant="ghost" onClick={() => navigate('/')} className="btn-transition">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Accueil
           </Button>
-          
+
           <Button onClick={() => {
             setCurrentItem(null);
             setIsFormOpen(true);
@@ -119,9 +117,9 @@ const Wardrobe = () => {
             Ajouter
           </Button>
         </div>
-      </header>
-      
-      <main className="container py-8">
+      </header> <br /><br />
+
+      <main className="container py-8 pt-16"> {/* padding-top ajouté ici pour compenser le header fixé */}
         <div className="mb-6 space-y-4">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
@@ -133,7 +131,7 @@ const Wardrobe = () => {
                 className="pl-9"
               />
             </div>
-            
+
             <div className="flex gap-2">
               <Select value={filterType} onValueChange={setFilterType}>
                 <SelectTrigger className="w-[140px]">
@@ -148,7 +146,7 @@ const Wardrobe = () => {
                   <SelectItem value="accessory">Accessoires</SelectItem>
                 </SelectContent>
               </Select>
-              
+
               <Select value={filterSeason} onValueChange={setFilterSeason}>
                 <SelectTrigger className="w-[140px]">
                   <SelectValue placeholder="Saison" />
@@ -166,7 +164,7 @@ const Wardrobe = () => {
         </div>
 
         <h1 className="text-xl font-medium">Ma Garde-Robe</h1> <br />
-        
+
         {items.length === 0 ? (
           <div className="text-center py-12 space-y-4">
             <Shirt className="h-16 w-16 mx-auto text-muted-foreground/50" />
@@ -197,7 +195,7 @@ const Wardrobe = () => {
           </div>
         )}
       </main>
-      
+
       <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
@@ -215,7 +213,7 @@ const Wardrobe = () => {
           />
         </DialogContent>
       </Dialog>
-      
+
       <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
         <DialogContent>
           <DialogHeader>

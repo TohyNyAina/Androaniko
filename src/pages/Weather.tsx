@@ -18,6 +18,7 @@ const Weather = () => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isFixed, setIsFixed] = useState(false); // Nouveau state pour la position du header
 
   // Fonction pour récupérer la météo
   const fetchWeather = async () => {
@@ -52,6 +53,24 @@ const Weather = () => {
   useEffect(() => {
     fetchWeather();
   }, [locationParam]);
+
+  // Fonction pour gérer le scroll et l'état du header fixe
+  const handleScroll = () => {
+    if (window.scrollY > 0) {
+      setIsFixed(true); // Fixe le header lorsqu'on fait défiler la page
+    } else {
+      setIsFixed(false); // Réinitialise la position du header
+    }
+  };
+
+  // Ajouter un écouteur d'événement de scroll
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   if (loading) {
     return (
@@ -88,7 +107,7 @@ const Weather = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Navbar */}
-      <header className="border-b bg-white">
+      <header className={cn('border-b bg-white', isFixed ? 'fixed top-0 left-0 right-0 z-10' : '')}>
         <div className="container py-4 flex items-center justify-between">
           <Button variant="ghost" onClick={() => navigate('/')} className="btn-transition">
             <ArrowLeft className="h-4 w-4 mr-2" />
