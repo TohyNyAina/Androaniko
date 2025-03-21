@@ -63,11 +63,17 @@ const Wardrobe = () => {
     setFilteredItems(filtered);
   };
 
+  const delayedToast = (message: string) => {
+    setTimeout(() => {
+      toast.success(message);
+    }, 2000);
+  };
+
   const handleAddItem = (item: Omit<ClothingItem, 'id' | 'createdAt'>) => {
     clothingService.add(item);
     loadItems();
     setIsFormOpen(false);
-    toast.success('Vêtement ajouté');
+    delayedToast('Vêtement ajouté');
   };
 
   const handleUpdateItem = (item: Omit<ClothingItem, 'id' | 'createdAt'>) => {
@@ -76,7 +82,7 @@ const Wardrobe = () => {
       loadItems();
       setIsFormOpen(false);
       setCurrentItem(null);
-      toast.success('Vêtement mis à jour');
+      delayedToast('Vêtement mis à jour');
     }
   };
 
@@ -86,18 +92,8 @@ const Wardrobe = () => {
       loadItems();
       setIsDeleteDialogOpen(false);
       setItemToDelete(null);
-      toast.success('Vêtement supprimé');
+      delayedToast('Vêtement supprimé');
     }
-  };
-
-  const handleEditItem = (item: ClothingItem) => {
-    setCurrentItem(item);
-    setIsFormOpen(true);
-  };
-
-  const handleDeleteItem = (id: string) => {
-    setItemToDelete(id);
-    setIsDeleteDialogOpen(true);
   };
 
   return (
