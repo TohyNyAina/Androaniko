@@ -1,0 +1,37 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Androany</title>
+    <meta name="description" content="Trouvez quoi porter en fonction de la météo" />
+    <meta name="theme-color" content="#0071e3" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" href="/images/icon-192.png" />
+    <link rel="apple-touch-icon" href="/images/icon-192.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Garde-Robe" />
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
+    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/service-worker.js')
+            .then(registration => {
+              console.log('Service Worker enregistré:', registration);
+            })
+            .catch(error => {
+              console.log('Échec de l\'enregistrement du Service Worker:', error);
+            });
+        });
+      }
+    </script>
+  </body>
+</html>
