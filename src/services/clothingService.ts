@@ -12,13 +12,13 @@ export type ClothingItem = {
 const STORAGE_KEY = 'wardrobe-items';
 
 export const clothingService = {
-  // Get all clothing items
+  // Maka ny akanjo rehetra
   getAll: (): ClothingItem[] => {
     const items = localStorage.getItem(STORAGE_KEY);
     return items ? JSON.parse(items) : [];
   },
 
-  // Add a new clothing item
+  // Manampy akanjo vaovao
   add: (item: Omit<ClothingItem, 'id' | 'createdAt'>): ClothingItem => {
     const newItem: ClothingItem = {
       ...item,
@@ -32,7 +32,7 @@ export const clothingService = {
     return newItem;
   },
 
-  // Update an existing clothing item
+  // Modification akanjo
   update: (id: string, updates: Partial<Omit<ClothingItem, 'id' | 'createdAt'>>): ClothingItem | null => {
     const items = clothingService.getAll();
     const itemIndex = items.findIndex(item => item.id === id);
@@ -46,7 +46,7 @@ export const clothingService = {
     return updatedItem;
   },
 
-  // Delete a clothing item
+  // Mamafa akanjo
   delete: (id: string): boolean => {
     const items = clothingService.getAll();
     const filteredItems = items.filter(item => item.id !== id);
@@ -57,11 +57,11 @@ export const clothingService = {
     return true;
   },
 
-  // Get recommendations based on temperature
+  // Manome suggestion arakaraka ny temperature
   getRecommendations: (tempC: number): {tops: ClothingItem[], bottoms: ClothingItem[], outerwear: ClothingItem[], footwear: ClothingItem[], accessory: ClothingItem[]} => {
     const items = clothingService.getAll();
     
-    // Determine season based on temperature
+    // Mamaritra ny saisson arakaraka ny temperature
     let season: 'winter' | 'spring' | 'summer' | 'fall' = 'spring';
     
     if (tempC < 10) {
@@ -74,7 +74,7 @@ export const clothingService = {
       season = 'summer';
     }
     
-    // Filter items based on season and temperature
+    // Mifiltré ny akanjo en fonction ny saison sy temperature
     const suitableItems = items.filter(item => 
       item.season === season || 
       item.season === 'all' || 
@@ -82,14 +82,14 @@ export const clothingService = {
        tempC >= item.minTemp && tempC <= item.maxTemp)
     );
     
-    // Group by type (including footwear and accessory)
+    // Regroupement par type
     const tops = suitableItems.filter(item => item.type === 'top');
     const bottoms = suitableItems.filter(item => item.type === 'bottom');
     const outerwear = suitableItems.filter(item => item.type === 'outerwear');
     const footwear = suitableItems.filter(item => item.type === 'footwear');
     const accessory = suitableItems.filter(item => item.type === 'accessory');
     
-    // Randomize selections
+    // Selection au hazard
     const randomize = <T>(arr: T[]): T[] => {
       return arr.sort(() => Math.random() - 0.5);
     };
@@ -103,7 +103,7 @@ export const clothingService = {
     };
   },
 
-  // Get default recommendations if wardrobe is empty
+  // Recommandation par defeaut ra ohatra ka tsisy akanjo ajouté anaty garde-robe
   getDefaultRecommendations: (tempC: number): {text: string, imageUrl: string} => {
     if (tempC < 10) {
       return {

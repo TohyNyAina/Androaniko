@@ -25,7 +25,7 @@ export type LocationSuggestion = {
   id: number;
 };
 
-// Use the provided API key
+
 const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
 
 

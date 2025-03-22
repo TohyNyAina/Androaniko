@@ -27,13 +27,13 @@ const InstallPrompt = () => {
         deferredPrompt.prompt();
         deferredPrompt.userChoice
           .then((choiceResult) => {
-            // Informer l'utilisateur en fonction de sa décision
+            // Mampahafantatra ny user arakarakan'ny fanapahankeviny
             if (choiceResult.outcome === 'accepted') {
               toast.success('Merci d\'avoir installé notre application!');
             } else {
               toast.info('Vous pouvez installer l\'application plus tard depuis le menu de votre navigateur');
             }
-            // Réinitialiser l'état après que l'utilisateur ait fait un choix
+            // Réinitialisena ny état rehefa avy misafidy ny user
             setDeferredPrompt(null);
           })
           .catch((error) => {
@@ -43,16 +43,14 @@ const InstallPrompt = () => {
       }
     };
 
-    // Configurer l'écouteur d'événement d'installation
     window.addEventListener('beforeinstallprompt', handleInstallPrompt);
 
-    // Nettoyer l'écouteur lors du démontage
     return () => {
       window.removeEventListener('beforeinstallprompt', handleInstallPrompt);
     };
   }, [deferredPrompt]);
 
-  return null; // Ce composant ne rend rien visuellement
+  return null; 
 };
 
 export default InstallPrompt;

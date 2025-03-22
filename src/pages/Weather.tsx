@@ -85,16 +85,16 @@ const Weather = () => {
 
   if (!weather) return null;
 
-  // Vérification de la température pour ne pas recommander des vêtements d'extérieur si la température est trop élevée ou trop basse
-  const isOuterwearRecommended = weather.current.temp_c <= 15; // Par exemple, on recommande des vêtements d'extérieur si la température est inférieure ou égale à 15°C
+  // Vérification de la température mba tsy hirecommandena akanjo ivelany
+  const isOuterwearRecommended = weather.current.temp_c <= 15; // Par exemple, mirecommande akanjo ivelany ra ohatra ka latsaka na mitovy amin'ny 15°C ny temperature
 
   // Récupérer les recommandations
   const recommendations = clothingService.getRecommendations(weather.current.temp_c);
   const defaultRec = clothingService.getDefaultRecommendations(weather.current.temp_c);
 
-  // Modifier les recommandations de vêtements d'extérieur en fonction de la température
+  // Manova ny recommandations ny akanjo ivelany arakaraka ny temperature
   if (!isOuterwearRecommended) {
-    recommendations.outerwear = []; // Si la température est trop chaude ou trop froide, on retire les vêtements d'extérieur
+    recommendations.outerwear = []; // Ra mafana lotra ny andro dia esorina ny akanjo ivelany
   }
 
   const hasItems =

@@ -20,15 +20,15 @@ const ClothingForm: React.FC<ClothingFormProps> = ({ initialData, onSubmit, onCa
   const [maxTemp, setMaxTemp] = useState<number | undefined>(initialData?.maxTemp);
   const [imageUrl, setImageUrl] = useState(initialData?.imageUrl || '');
 
-  // Détermine les options de type en fonction de la saison sélectionnée
+  // Détermine les options de type arakarakan'ny toetrandro
   const getAvailableTypes = () => {
     if (season === 'summer') {
-      return ['top', 'bottom', 'footwear', 'accessory']; // Pas d'option extérieur pour l'été
+      return ['top', 'bottom', 'footwear', 'accessory']; 
     }
     if (season === 'all') {
-      return ['top', 'bottom', 'outerwear', 'footwear', 'accessory']; // Toutes les options disponibles pour toutes saisons
+      return ['top', 'bottom', 'outerwear', 'footwear', 'accessory']; 
     }
-    return ['top', 'bottom', 'outerwear', 'footwear', 'accessory']; // Par défaut, toutes les options sauf extérieur pour été
+    return ['top', 'bottom', 'outerwear', 'footwear', 'accessory']; 
   };
 
   const handleSubmit = (e: React.FormEvent) => {

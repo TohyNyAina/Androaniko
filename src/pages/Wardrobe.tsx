@@ -125,7 +125,7 @@ const Wardrobe = () => {
         </div>
       </header> <br /><br />
 
-      <main className="container py-8 pt-16"> {/* padding-top ajouté ici pour compenser le header fixé */}
+      <main className="container py-8 pt-16"> 
         <div className="mb-6 space-y-4">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
